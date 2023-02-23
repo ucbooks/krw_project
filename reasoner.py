@@ -54,7 +54,7 @@ def reasoner(turtle_file):
             )
         )
 
-    # Query DBPedia to check the consistency of each tuple.
+    # Query DBPedia to check the consistency of each triple.
     consistency_state = []
     for tuple_ in spo_tuples:
         subject = tuple_[0]
