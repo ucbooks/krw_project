@@ -42,7 +42,7 @@ def reasoner(turtle_file):
         )
 
     dbpedia_graph = Graph()
-    dbpedia_graph.parse("https://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&qtxt=select%20distinct%20%3FConcept%20where%20%7B%5B%5D%20a%20%3FConcept%7D%20LIMIT%20100&format=text%2Fhtml&timeout=30000&signal_void=on&signal_unconnected=on")
+    dbpedia_graph.parse("https://dbpedia.org/resource/")
 
     # Query DBPedia to check the consistency of each tuple.
     consistency_state = []
@@ -51,6 +51,17 @@ def reasoner(turtle_file):
         predicate = tuple_[1]
         object_ = tuple_[2]
 
-        
-        
+        for s, p, o in dbpedia_graph.triples(
+                (
+                    subject,
+                    predicate,
+                    None
+                )
+        ):
+            if object_ == o:
+                consistency_state.append(True)
+            else:
+                consistency_state.append(False)
+
+    return consistency_state
     
