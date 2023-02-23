@@ -54,15 +54,15 @@ def reasoner(turtle_file):
             )
         )
 
-    dbpedia_graph = Graph()
-    dbpedia_graph.parse("https://dbpedia.org/resource/")
-
     # Query DBPedia to check the consistency of each tuple.
     consistency_state = []
     for tuple_ in spo_tuples:
         subject = tuple_[0]
         predicate = tuple_[1]
         object_ = tuple_[2]
+
+        dbpedia_graph = Graph()
+        dbpedia_graph.parse("https://dbpedia.org/resource/"+subject)
 
         for s, p, o in dbpedia_graph.triples(
                 (
