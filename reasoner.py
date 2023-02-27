@@ -1,10 +1,9 @@
 from ast import arg
-from rdflib import Graph, RDFS, RDF, URIRef, Namespace, Literal, XSD
+from rdflib import Graph, RDFS, RDF, URIRef, Namespace, Literal, XSD, FOAF
 from owlrl import DeductiveClosure, RDFS_Semantics
 import random, sys
 import sys
 import os
-import pandas as pd
 from string import Template
 import re
 import json
@@ -25,56 +24,31 @@ for obj in g.objects(subject=uri, predicate=RDF.type):
 
 def reasoner(turtle_file):
 
-    """
-        Takes in a graph and performs a search on dbpedia for the unknown classes. 
-    """
+    g = Graph()
+    g.parse(turtle_file, format="turtle")
 
-    with open(turtle_file, "r") as hander:
-        turtle_data = handler.read()
-
-    # Split the statements by fullstop.
-    statements = turtle_data.split(".")
-
-    # Strip statements
-    stripped_statements = []
-    for statement in statements:
-        stripped_statements.append(
-            statement.strip()
-        )
-
-    # Turn statements into (subject, predicate, object) tuples
-    spo_tuples = []
-    for statement in stripped_statements:
-        split_statement = statement.split(" ")
-        spo_tuples.append(
-            (
-                split_statement[0].strip(),
-                split_statement[1].strip(),
-                split_statement[2].strip()
-            )
-        )
-
-    # Query DBPedia to check the consistency of each triple.
     consistency_state = []
-    for tuple_ in spo_tuples:
-        subject = tuple_[0]
-        predicate = tuple_[1]
-        object_ = tuple_[2]
-
+    for subject, predicate, object_ in g.triples((None, None, None)):
         dbpedia_graph = Graph()
-        dbpedia_graph.parse("https://dbpedia.org/resource/"+subject)
 
-        for s, p, o in dbpedia_graph.triples(
+        uri = subject
+        predicate = predicate
+        object_ = object_
+
+        print(uri)
+        dbpedia_graph.parse(
+            uri
+        )
+        for subj, pred, obj in dbpedia_graph.triples(
                 (
-                    subject,
+                    uri,
                     predicate,
                     None
                 )
         ):
-            if object_ == o:
+            if str(obj) == str(object_):
                 consistency_state.append(True)
             else:
                 consistency_state.append(False)
 
     return consistency_state
-    
