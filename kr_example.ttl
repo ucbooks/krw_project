@@ -16,7 +16,7 @@
 
 <http://example.com/id/1849899600_1> schema:attendee dbp:Elon_Musk .
 
-dbr:Elon_Musk dbp:children 9 ;
+dbr:Elon_Musk dbp:children 10 ;
 	ex:hidesIn dbp:Office .
 
 dbp:Office schema:location dbp:Twitter .

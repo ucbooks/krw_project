@@ -45,5 +45,6 @@ def reasoner(turtle_file):
                     consistency_state.append(False)
         except:
             print("URI failed :", uri)
+            consistency_state.append(False)
 
     return consistency_state
