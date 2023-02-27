@@ -35,7 +35,7 @@ def reasoner(turtle_file):
         predicate = predicate
         object_ = object_
 
-        print(uri)
+        #print(uri)
         dbpedia_graph.parse(
             uri
         )
