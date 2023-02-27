@@ -11,6 +11,12 @@ import json
 
 def reasoner(turtle_file):
 
+    """
+        Check the validity of the turtle triples
+           - input: Turtle file
+           - output: Consistency booleans for each triple
+    """
+
     g = Graph()
     g.parse(turtle_file, format="turtle")
 
