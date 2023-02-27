@@ -8,19 +8,6 @@ from string import Template
 import re
 import json
 
-"""
-from rdflib import Graph, URIRef, RDF
-uri = URIRef('http://dbpedia.org/resource/Richard_Nixon')
-person = URIRef('http://dbpedia.org/ontology/Person')
-
-g = Graph()
-g.parse(uri)
-
-for obj in g.objects(subject=uri, predicate=RDF.type):
-    if obj == person:
-        print uri, "is a", person
-"""
-
 
 def reasoner(turtle_file):
 
