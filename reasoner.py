@@ -19,23 +19,31 @@ def reasoner(turtle_file):
         dbpedia_graph = Graph()
 
         uri = subject
-        predicate = predicate
-        object_ = object_
+        try:
+            predicate = predicate
+            object_ = object_
 
-        #print(uri)
-        dbpedia_graph.parse(
-            uri
-        )
-        for subj, pred, obj in dbpedia_graph.triples(
+            print("URI succeeded")
+            print(uri, predicate, object_)
+            
+            dbpedia_graph.parse(
+                uri
+            )
+
+            for subj, pred, obj in dbpedia_graph.triples(
                 (
                     uri,
                     predicate,
                     None
                 )
-        ):
-            if str(obj) == str(object_):
-                consistency_state.append(True)
-            else:
-                consistency_state.append(False)
+            ):
+                print("object printer")
+                print(obj, object_)
+                if str(obj) == str(object_):
+                    consistency_state.append(True)
+                else:
+                    consistency_state.append(False)
+        except:
+            print("URI failed :", uri)
 
     return consistency_state
