@@ -1,0 +1,6 @@
+<http://dbpedia.org/resource/Elon_Musk>
+   <http://dbpedia.org/property/children>
+   9 .
+<http://dbpedia.org/resource/Elon_Musk>
+   <http://dbpedia.org/property/birthPlace>
+   "Pretoria, Transvaal, South Africa" .
