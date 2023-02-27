@@ -1,0 +1,24 @@
+@prefix schema: <http://schema.org/> .
+@prefix dbp: <http://dbpedia.org/property/> .
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix dbo: <http://dbpedia.org/ontology/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex: <http://example.com/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://www.theonion.com/elon-musk-hides-in-dark-twitter-office-as-landlord-bang-1849899600> rdf:type schema:Article ; 
+	schema:location dbp:San_Francisco ;
+	schema:publisher dbp:The_Onion ;
+	rdfs:label "Elon Musk Hides In Dark Twitter Office As Landlord Bangs On Door Demanding Rent" ;
+	dcterms:date "2022-12-16" ;
+	schema:event <http://example.com/id/1849899600_1> .
+
+<http://example.com/id/1849899600_1> schema:attendee dbp:Elon_Musk .
+
+dbr:Elon_Musk dbp:children 9 ;
+	ex:hidesIn dbp:Office .
+
+dbp:Office schema:location dbp:Twitter .
+
+dbp:Twitter_inc schema:location dbp:San_Francisco .
