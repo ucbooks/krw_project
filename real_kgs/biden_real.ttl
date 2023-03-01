@@ -1,0 +1,8 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Joe_Biden	dbo:birthPlace	<http://dbpedia.org/resource/Scranton,_Pennsylvania> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Joe_Biden	dbo:birthDate	"1942-11-20"^^xsd:date ;
+	dbo:birthName	"Joseph Robinette Biden Jr."@en ;
+	dbo:party	dbr:Independent_politician ,
+		<http://dbpedia.org/resource/Democratic_Party_(United_States)> .

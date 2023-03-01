@@ -1,0 +1,4 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Barack_Obama	dbo:birthPlace	dbr:Hawaii ,
+		dbr:Honolulu .

@@ -1,0 +1,9 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Mark_Rutte	dbo:birthPlace	dbr:The_Hague .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Mark_Rutte	dbo:birthDate	"1967-02-14"^^xsd:date ;
+	dbo:education	dbr:Leiden_University ,
+		dbr:Master_of_Arts ;
+	dbo:party	<http://dbpedia.org/resource/People\u0027s_Party_for_Freedom_and_Democracy> ;
+	dbo:residence	dbr:Catshuis .

@@ -1,0 +1,7 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Joe_Biden	dbo:birthPlace	dbr:The_Hague .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Joe_Biden	dbo:birthDate	"1900-11-20"^^xsd:date ;
+	dbo:birthName	"Joe Biden"@en ;
+	dbo:party	dbr:GroenLinks .

@@ -1,0 +1,6 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Donald_Trump	dbo:birthPlace	dbr:Queens .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Donald_Trump	dbo:birthDate	"1946-06-14"^^xsd:date ;
+	dbo:birthName	"Donald John Trump"@en .
