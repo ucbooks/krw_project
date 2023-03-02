@@ -59,6 +59,7 @@ def reasoner(turtle_file):
                     True
                 )
             else:
+                print("Inconsistency ", object_, all_objects)
                 consistency_state.append(
                     False
                 ) 
@@ -66,4 +67,6 @@ def reasoner(turtle_file):
             print("URI failed :", uri)
             consistency_state.append(False)
 
-    return consistency_state
+    truth_percentage = consistency_state.count(True)/(consistency_state.count(True) + consistency_state.count(False)) * 100
+
+    return truth_percentage
