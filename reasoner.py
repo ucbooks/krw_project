@@ -9,6 +9,17 @@ import re
 import json
 
 
+"""
+sequence of events into an article
+
+schema.org information consistent with dbpedia or are we missing information like location date etc.
+
+additional resources like wikidata.
+
+truth assesment percentages or over subgraphs
+"""
+
+
 def reasoner(turtle_file):
 
     """
@@ -28,27 +39,29 @@ def reasoner(turtle_file):
         try:
             predicate = predicate
             object_ = object_
-
-            print("URI succeeded")
-            print(uri, predicate, object_)
             
             dbpedia_graph.parse(
                 uri
             )
 
-            for subj, pred, obj in dbpedia_graph.triples(
-                (
-                    uri,
-                    predicate,
-                    None
-                )
+            all_objects = []
+            for object__ in dbpedia_graph.objects(
+                    subject=uri,
+                    predicate=predicate,
+                    unique=True
             ):
-                print("object printer")
-                print(obj, object_)
-                if str(obj) == str(object_):
-                    consistency_state.append(True)
-                else:
-                    consistency_state.append(False)
+                all_objects.append(
+                    object__
+                )
+
+            if object_ in all_objects:
+                consistency_state.append(
+                    True
+                )
+            else:
+                consistency_state.append(
+                    False
+                ) 
         except:
             print("URI failed :", uri)
             consistency_state.append(False)
