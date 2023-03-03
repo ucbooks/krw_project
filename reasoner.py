@@ -66,7 +66,6 @@ def reasoner(turtle_file):
         truth_percentage_dbpedia,
         truth_percentage_wikidata
     )
-    
 
 
 def get_consistency_state_dbpedia(subject, predicate, object_):
@@ -158,23 +157,29 @@ def get_consistency_state_wikidata(subject, predicate, object_):
     dbpedia_graph_object = Graph()
     print("The object is")
     print(object_)
-    try:
-        dbpedia_graph_object.parse(
+    
+    wikidata_ref_object = []
+    if Literal(object_):
+        wikidata_ref_object.append(
             object_
         )
-    except:
-        print("URI failed wikidata object parse: ", object_)
-        return False
-
-    wikidata_ref_object = []
-    for objects in dbpedia_graph_object.objects(
-            object_,
-            OWL.sameAs,
-            None
-    ):
-        if "wikidata" in objects:
-            wikidata_ref_object.append(
-                objects
+    else:
+        try:
+            dbpedia_graph_object.parse(
+                object_
+            )
+        except:
+            print("URI failed wikidata object parse: ", object_)
+            return False
+    
+        for objects in dbpedia_graph_object.objects(
+                object_,
+                OWL.sameAs,
+                None
+        ):
+            if "wikidata" in objects:
+                wikidata_ref_object.append(
+                    objects
             )
 
     print("The subject predicate and object is")
@@ -195,7 +200,7 @@ def get_consistency_state_wikidata(subject, predicate, object_):
                 None
             )
     ):
-        if ("/prop/"+wikidata_ref_predicate[0].split("/")[-1] in p) and (s == wikidata_ref_subject[0]):
+        if (len(wikidata_ref_predicate) > 0) and ("/prop/"+wikidata_ref_predicate[0].split("/")[-1] in p) and (s == wikidata_ref_subject[0]):
             all_objects.append(
                 o
             )
