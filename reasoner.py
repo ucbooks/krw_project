@@ -154,27 +154,27 @@ def get_consistency_state_wikidata(subject, predicate, object_):
                 objects
             )
 
+
     dbpedia_graph_object = Graph()
-    print("The object is")
-    print(object_)
+    #print("The object is")
+    #print(object_)
     
     wikidata_ref_object = []
-    if Literal(object_):
-        wikidata_ref_object.append(
-            object_
-        )
+
+    if "http://" not in object_:
+        wikidata_ref_object.append(object_)
     else:
         try:
             dbpedia_graph_object.parse(
-                object_
+                   object_
             )
         except:
             print("URI failed wikidata object parse: ", object_)
             return False
     
         for objects in dbpedia_graph_object.objects(
-                object_,
-                OWL.sameAs,
+            object_,
+            OWL.sameAs,
                 None
         ):
             if "wikidata" in objects:
@@ -192,18 +192,28 @@ def get_consistency_state_wikidata(subject, predicate, object_):
         wikidata_ref_subject[0]
     )
 
-    all_objects = []
+    mapping = None
     for s, p, o in wikidata_graph.triples(
             (
-                None,
-                None,
+                URIRef(wikidata_ref_predicate[0]),
+                URIRef("http://wikiba.se/ontology#directClaim"),
                 None
             )
     ):
-        if (len(wikidata_ref_predicate) > 0) and ("/prop/"+wikidata_ref_predicate[0].split("/")[-1] in p) and (s == wikidata_ref_subject[0]):
-            all_objects.append(
-                o
+        if not mapping:
+            mapping = o
+            
+    all_objects = []
+    for s, p, o in wikidata_graph.triples(
+            (
+                wikidata_ref_subject[0],
+                mapping,
+                None
             )
+    ):
+        all_objects.append(
+            o
+        )
 
     consistency_found = False
     for object_ in all_objects:
