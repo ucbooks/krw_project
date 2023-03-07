@@ -8,6 +8,16 @@ from string import Template
 import re
 import json
 
+import requests
+from bs4 import BeautifulSoup
+from pprint import pprint
+
+from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
+import os, random, json, logging, csv
+import spotlight
+
+import torch
+
 
 """
 sequence of events into an article
@@ -18,6 +28,74 @@ additional resources like wikidata.
 
 truth assesment percentages or over subgraphs
 """
+
+def extract_triples(text):
+
+    """
+        Extract triples from text.
+    """
+
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
+    tokenizer = AutoTokenizer.from_pretrained("Babelscape/rebel-large")
+    model = AutoModelForSeq2SeqLM.from_pretrained("Babelscape/rebel-large").to(device)
+    gen_kwargs = {
+        "max_length": 256,
+        "length_penalty": 0,
+        "num_beams": 3,
+        "num_return_sequences": 1,
+    }
+
+    model_inputs = tokenizer(
+        text, max_length=256, padding=True, truncation=True, return_tensors = 'pt'
+    ).to(device)
+
+    generated_tokens = model.generate(
+        model_inputs["input_ids"].to(device),
+        attention_mask=model_inputs["attention_mask"].to(device),
+        **gen_kwargs,
+    )
+
+    decoded_preds = tokenizer.batch_decode(generated_tokens, skip_special_tokens=False)
+
+    for idx, sentence in enumerate(decoded_preds):
+        print(f'Prediction triplets sentence {idx}')
+        triples = extract_triplets(sentence)   
+        print(triples)
+
+    return True
+    
+
+def extract_triplets(text):
+    triplets = []
+    relation, subject, relation, object_ = '', '', '', ''
+    text = text.strip()
+    current = 'x'
+    for token in text.replace("<s>", "").replace("<pad>", "").replace("</s>", "").split():
+        if token == "<triplet>":
+            current = 't'
+            if relation != '':
+                triplets.append([subject.strip(), relation.strip(), object_.strip()])
+                relation = ''
+            subject = ''
+        elif token == "<subj>":
+            current = 's'
+            if relation != '':
+                triplets.append([subject.strip(), relation.strip(), object_.strip()])
+            object_ = ''
+        elif token == "<obj>":
+            current = 'o'
+            relation = ''
+        else:
+            if current == 't':
+                subject += ' ' + token
+            elif current == 's':
+                object_ += ' ' + token
+            elif current == 'o':
+                relation += ' ' + token
+    if subject != '' and relation != '' and object_ != '':
+        triplets.append([subject.strip(), relation.strip(), object_.strip()])
+    return triplets
 
 
 def reasoner(turtle_file):
