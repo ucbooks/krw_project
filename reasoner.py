@@ -33,6 +33,8 @@ def extract_triples(text):
 
     """
         Extract triples from text.
+            - input: text
+            - output: extracted triples
     """
 
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -58,12 +60,16 @@ def extract_triples(text):
 
     decoded_preds = tokenizer.batch_decode(generated_tokens, skip_special_tokens=False)
 
+    all_triples = []
     for idx, sentence in enumerate(decoded_preds):
         print(f'Prediction triplets sentence {idx}')
-        triples = extract_triplets(sentence)   
-        print(triples)
+        triples = extract_triplets(sentence)
 
-    return True
+        all_triples.append(
+            triples
+        )
+
+    return all_triples
     
 
 def extract_triplets(text):
@@ -94,7 +100,7 @@ def extract_triplets(text):
             elif current == 'o':
                 relation += ' ' + token
     if subject != '' and relation != '' and object_ != '':
-        triplets.append([subject.strip(), relation.strip(), object_.strip()])
+        triplets.append((subject.strip(), relation.strip(), object_.strip()))
     return triplets
 
 
