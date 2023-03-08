@@ -70,7 +70,16 @@ def extract_triples(text):
         )
 
     return all_triples
-    
+
+
+def annotate(text):
+
+    spotlight_results = spotlight.annotate('https://api.dbpedia-spotlight.org/en/annotate',text)
+    urls = []
+    for r in spotlight_results:
+      urls.append(r['URI'])
+    return urls
+   
 
 def extract_triplets(text):
     triplets = []
