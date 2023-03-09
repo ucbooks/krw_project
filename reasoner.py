@@ -144,13 +144,20 @@ def reasoner(turtle_file):
             consistency_state
         )
 
+    consistency_state_wikidata_direct = get_consistency_state_wikidata_direct(
+        turtle_file
+    )
+
     truth_percentage_dbpedia = (consistency_state_dbpedia.count(True)/(consistency_state_dbpedia.count(True) + consistency_state_dbpedia.count(False))) * 100
 
     truth_percentage_wikidata = (consistency_state_wikidata.count(True)/(consistency_state_wikidata.count(True) + consistency_state_wikidata.count(False))) * 100
 
+    truth_percentage_wikidata_direct = (consistency_state_wikidata_direct.count(True)/(consistency_state_wikidata_direct.count(True) + consistency_state_wikidata_direct.count(False))) * 100
+
     return (
         truth_percentage_dbpedia,
-        truth_percentage_wikidata
+        truth_percentage_wikidata,
+        truth_percentage_wikidata_direct
     )
 
 
