@@ -72,15 +72,6 @@ def extract_triples(text):
         )
 
     return all_triples
-
-
-def annotate(text):
-
-    spotlight_results = spotlight.annotate('http://api.dbpedia-spotlight.org/en/annotate', text, confidence=0.5, support=20)
-    urls = []
-    for r in spotlight_results:
-      urls.append(r['URI'])
-    return urls
    
 
 def extract_triplets(text):
@@ -324,6 +315,12 @@ def get_consistency_state_wikidata(subject, predicate, object_):
 
 
 def query_wikidata(string):
+
+    """
+       String query wikidata
+           - input; string to query
+           - output: wikidata code
+    """
     
     url = 'https://query.wikidata.org/sparql'
     query = """
@@ -354,6 +351,12 @@ def query_wikidata(string):
     return results
 
 def query_wikidata_property(string):
+
+    """
+       String query wikidata property wdt:P1687
+           - input; string to query
+           - output: wikidata code
+    """
     
     url = 'https://query.wikidata.org/sparql'
     query = """
@@ -379,7 +382,7 @@ def query_wikidata_property(string):
     results = []
     for r in bindings:
         results.append(
-            r['item']["value"]
+            r['property']["value"]
         )
         
     return results
@@ -403,9 +406,77 @@ def camel_to_sentence(string):
         new_string = string    
 
     return new_string
-    
 
+
+def get_consistency_state_wikidata_direct(graph_path):
+
+    """
+       Obtain the accuracy of a wikidata graph.
+            - graph_path: path to dbpedia graph
+            - output: list of True or False.
+    """
+
+    triple_set = obtain_wikidata_codes(graph_path)
+
+
+    consistency_state = []
+    
+    for each_set in triple_set:
+
+        consistency_state.append(False)
+        
+        graph_objects = {}
+        for triple in each_set:
+            subject = triple[0]
+            if subject not in graph_objects:
+                graph_object = Graph()
+                graph_object.parse(
+                    subject
+                )
+                graph_objects[subject] = graph_object
+
+        for triple in each_set:
+            graph = graph_objects[triple[0]]
+
+            mapping = None
+            for s, p, o in graph.triples(
+                (
+                    URIRef(triple[1]),
+                    URIRef("http://wikiba.se/ontology#directClaim"),
+                    None
+                )
+            ):
+                if not mapping:
+                    mapping = o
+
+            if not mapping:
+                mapping = triple[1]
+
+            mapped_objects = []
+            for s, p, o in graph.triples(
+                    (
+                        URIRef(triple[0]),
+                        URIRef(mapping),
+                        None
+                    )
+            ):
+                mapped_objects.append(
+                    o
+                )
+
+            if triple[2] in mapped_objects:
+                consistency_state[-1]=True
+
+    return consistency_state
+                    
+            
 def obtain_wikidata_codes(graph_path):
+
+    """
+      Obtain the wikidata codes by sparql querying.
+        - input: dbpedia graph
+        - output: wikidata triple set. ( (set of triples to match, set of triples to match) )
+    """
 
     g = Graph()
 
@@ -470,6 +541,12 @@ def obtain_wikidata_codes(graph_path):
 
 
 def generate_wikidata_triples(triple):
+
+    """
+        Generating wikidata triples
+          - input: triple
+          - output: wikidata triple set.
+    """
 
     subject = triple[0]
     predicate = triple[1]
