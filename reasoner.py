@@ -11,6 +11,8 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
+from inflection import camelize
+from time import sleep
 
 from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
 import os, random, json, logging, csv
@@ -74,7 +76,7 @@ def extract_triples(text):
 
 def annotate(text):
 
-    spotlight_results = spotlight.annotate('https://api.dbpedia-spotlight.org/en/annotate',text)
+    spotlight_results = spotlight.annotate('http://api.dbpedia-spotlight.org/en/annotate', text, confidence=0.5, support=20)
     urls = []
     for r in spotlight_results:
       urls.append(r['URI'])
@@ -319,3 +321,185 @@ def get_consistency_state_wikidata(subject, predicate, object_):
         return False
     else:
         return True
+
+
+def query_wikidata(string):
+    
+    url = 'https://query.wikidata.org/sparql'
+    query = """
+        SELECT distinct ?item WHERE{  
+            ?item ?label "%s"@en.  
+            ?article schema:about ?item .
+            ?article schema:inLanguage "en" .
+            ?article schema:isPartOf <https://en.wikipedia.org/>.	
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    
+        }
+    """%(string)
+
+    r = requests.get(url, params = {'format': 'json', 'query': query})
+
+    try:
+        data = r.json()
+    
+        bindings = data["results"]["bindings"]
+    except:
+        bindings = []
+        
+    results = []
+    for r in bindings:
+        results.append(
+            r['item']["value"]
+        )
+
+    return results
+
+def query_wikidata_property(string):
+    
+    url = 'https://query.wikidata.org/sparql'
+    query = """
+        SELECT distinct ?item ?property WHERE {  
+            ?item ?label "%s"@en.
+            ?item wdt:P1687 ?property . 
+            ?article schema:about ?item .
+            ?article schema:inLanguage "en" .
+            ?article schema:isPartOf <https://en.wikipedia.org/>.	
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    
+}
+    """%(string)
+
+    r = requests.get(url, params = {'format': 'json', 'query': query})
+
+    try:
+        data = r.json()
+        
+        bindings = data["results"]["bindings"]
+    except:
+        bindings = []
+        
+    results = []
+    for r in bindings:
+        results.append(
+            r['item']["value"]
+        )
+        
+    return results
+
+
+def camel_to_sentence(string):
+    """
+        Input - Sting: birthPlace
+        Output - Sting: birth place
+    """
+
+    # Check for camel casing
+    if camelize(string, False) == string:
+        new_string = ""
+        for i in string:
+            if i.isupper() == True:
+                new_string += " "+i.lower()
+            else:
+                new_string += i
+    else:
+        new_string = string    
+
+    return new_string
+    
+
+def obtain_wikidata_codes(graph_path):
+
+    g = Graph()
+
+    g.parse(graph_path)
+
+    wikidata_codes_subjects = []
+    wikidata_codes_predicates = []
+    wikidata_codes_objects = []
+
+    subjects = []
+    predicates = []
+    objects = []
+
+    for s, p, o in g.triples((None, None, None)):
+        subjects.append(
+            camel_to_sentence(
+                s.split("/")[-1].replace("_", " ")
+            )
+        )
+        predicates.append(
+            camel_to_sentence(
+                p.split("/")[-1].replace("_", " ")
+            )
+        )
+        if "http:" not in o:
+            objects.append(
+                (
+                    o,
+                    "Literal"
+                )
+            )
+        else:
+            objects.append(
+                (
+                    camel_to_sentence(
+                        o.split("/")[-1].replace("_", " ")
+                    ),
+                    "IRI"
+                )
+            )
+
+    triples = []
+    for i in range(0, len(subjects)):
+        triples.append(
+            (
+                subjects[i],
+                predicates[i],
+                objects[i]
+            )
+        )
+            
+    new_triples = []
+    for triple in triples:
+        sleep(5)
+        new_triples.append(
+            generate_wikidata_triples(
+                triple
+            )
+        )
+            
+    return new_triples
+
+
+def generate_wikidata_triples(triple):
+
+    subject = triple[0]
+    predicate = triple[1]
+    object_ = triple[2]
+
+    wikidata_subject = query_wikidata(
+        subject
+    )
+
+    wikidata_predicate = query_wikidata_property(
+        predicate
+    )
+
+    wikidata_object = []
+    if object_[1] == "Literal":
+        wikidata_object = [object_[0]]
+    else:
+        wikidata_object = query_wikidata(
+            object_[0]
+        )
+
+    triple_set = []
+
+    for x in wikidata_subject:
+        for y in wikidata_predicate:
+            for z in wikidata_object:
+                triple_set.append(
+                    (
+                        x, y, z
+                    )
+                )
+    
+    return triple_set
