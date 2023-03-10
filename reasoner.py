@@ -298,13 +298,13 @@ def get_consistency_state_wikidata(subject, predicate, object_):
                 )
         ):
             if not mapping:
-                mapping = o
+                mapping = URIRef(o)
             
     all_objects = []
     for s, p, o in wikidata_graph.triples(
             (
                 URIRef(wikidata_ref_subject[0]),
-                URIRef(mapping),
+                mapping,
                 None
             )
     ):
@@ -463,7 +463,7 @@ def get_consistency_state_wikidata_direct(graph_path):
                 )
             ):
                 if not mapping:
-                    mapping = o
+                    mapping = URIRef(o)
 
             if not mapping:
                 mapping = triple[1]
@@ -472,7 +472,7 @@ def get_consistency_state_wikidata_direct(graph_path):
             for s, p, o in graph.triples(
                     (
                         URIRef(triple[0]),
-                        URIRef(mapping),
+                        mapping,
                         None
                     )
             ):
