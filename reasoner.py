@@ -285,22 +285,26 @@ def get_consistency_state_wikidata(subject, predicate, object_):
         wikidata_ref_subject[0]
     )
 
-    mapping = None
-    for s, p, o in wikidata_graph.triples(
-            (
-                URIRef(wikidata_ref_predicate[0]),
-                URIRef("http://wikiba.se/ontology#directClaim"),
-                None
-            )
-    ):
-        if not mapping:
-            mapping = o
+    if len(wikidata_ref_predicate) == 0:
+        print("No predicate found for ", predicate)
+        return False
+    else:
+        mapping = None
+        for s, p, o in wikidata_graph.triples(
+                (
+                    URIRef(wikidata_ref_predicate[0]),
+                    URIRef("http://wikiba.se/ontology#directClaim"),
+                    None
+                )
+        ):
+            if not mapping:
+                mapping = o
             
     all_objects = []
     for s, p, o in wikidata_graph.triples(
             (
-                wikidata_ref_subject[0],
-                mapping,
+                URIRef(wikidata_ref_subject[0]),
+                URIRef(mapping),
                 None
             )
     ):
@@ -310,12 +314,15 @@ def get_consistency_state_wikidata(subject, predicate, object_):
 
     consistency_found = False
     for object_ in all_objects:
-        if wikidata_ref_object[0] in object_:
+        if len(wikidata_ref_object) > 0 and wikidata_ref_object[0] in object_:
             consistency_found = True
             return True
+        else:
+            print("No object found")
+            print(object_)
 
     if not consistency_found:
-        print("Inconsistency ", wikidata_ref_object[0], all_objects)
+        print("Inconsistency (dbpedia instance, wikidata ref, all objects found)", object_, wikidata_ref_object, all_objects)
         return False
     else:
         return True
@@ -424,6 +431,8 @@ def get_consistency_state_wikidata_direct(graph_path):
     """
 
     triple_set = obtain_wikidata_codes(graph_path)
+
+    print(triple_set)
 
 
     consistency_state = []
