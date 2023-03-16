@@ -313,16 +313,16 @@ def get_consistency_state_wikidata(subject, predicate, object_):
         )
 
     consistency_found = False
-    for object_ in all_objects:
-        if len(wikidata_ref_object) > 0 and wikidata_ref_object[0] in object_:
+    for object__ in all_objects:
+        if len(wikidata_ref_object) > 0 and wikidata_ref_object[0] in object__:
             consistency_found = True
             return True
         else:
             print("No object found")
-            print(object_)
+            print(object__)
 
     if not consistency_found:
-        print("Inconsistency (dbpedia instance, wikidata ref, all objects found)", object_, wikidata_ref_object, all_objects)
+        print("Inconsistency (dbpedia instance, property, wikidata ref, all objects found)", object_, mapping, wikidata_ref_object, all_objects)
         return False
     else:
         return True
@@ -432,6 +432,7 @@ def get_consistency_state_wikidata_direct(graph_path):
 
     triple_set = obtain_wikidata_codes(graph_path)
 
+    print("The wikidata codes are")
     print(triple_set)
 
 
@@ -469,6 +470,9 @@ def get_consistency_state_wikidata_direct(graph_path):
                 mapping = triple[1]
 
             mapped_objects = []
+
+            print("The subject is ", triple[0])
+            print("The predicate is ", mapping)
             for s, p, o in graph.triples(
                     (
                         URIRef(triple[0]),
@@ -479,9 +483,13 @@ def get_consistency_state_wikidata_direct(graph_path):
                 mapped_objects.append(
                     o
                 )
-
-            if triple[2] in mapped_objects:
+            print("Object for comparison ", triple[2])
+            print("The mapped objects are ", mapped_objects)
+            if URIRef(triple[2]) in mapped_objects or Literal(triple[2]) in mapped_objects:
+                print("Yes match", triple[2])
                 consistency_state[-1]=True
+
+    print("The consistency state is ", consistency_state)
 
     return consistency_state
                     
@@ -543,7 +551,11 @@ def obtain_wikidata_codes(graph_path):
                 objects[i]
             )
         )
-            
+        
+    print("---------------")
+    print("The triples are")
+    print(triples)
+        
     new_triples = []
     for triple in triples:
         sleep(5)
