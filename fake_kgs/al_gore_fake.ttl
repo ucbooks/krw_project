@@ -1,0 +1,12 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Al_Gore	dbo:birthPlace	<http://dbpedia.org/resource/Washington,_D.C.> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Al_Gore	dbo:birthDate	"1948-03-31"^^xsd:date ;
+	dbo:birthName	"Al Ar Gore."@en ;
+	dbo:education	dbr:Vanderbilt_University ,
+		dbr:Harvard_University ;
+	dbo:parent	<http://dbpedia.org/resource/Albert_Gore_Sr.> ,
+		dbr:Pauline_LaFon_Gore ;
+	dbo:party	<http://dbpedia.org/resource/Republican_Party_(United_States)> ;
+	dbo:spouse	dbr:Tipper_Gore .

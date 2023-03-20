@@ -1,0 +1,12 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Elizabeth_Warren	dbo:birthPlace	dbr:Oklahoma_City ,
+		dbr:Oklahoma .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Elizabeth_Warren	dbo:birthDate	"1949-06-22"^^xsd:date ;
+	dbo:birthName	"Elizabeth Ann Herring"@en ;
+	dbo:education	dbr:University_of_Houston ,
+		dbr:Rutgers_Law_School ;
+	dbo:party	<http://dbpedia.org/resource/Democratic_Party_(United_States)> ,
+		<http://dbpedia.org/resource/Republican_Party_(United_States)> ;
+	dbo:spouse	<http://dbpedia.org/resource/Bruce_H._Mann> .

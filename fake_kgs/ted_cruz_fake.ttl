@@ -1,0 +1,10 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Ted_Cruz	dbo:birthPlace	dbr:Queens .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Ted_Cruz	dbo:birthDate	"1970-12-22"^^xsd:date ;
+	dbo:birthName	"Rafael Cruz"@en ;
+	dbo:education	dbr:Harvard_University ,
+		dbr:Princeton_University ;
+	dbo:party	<http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+	dbo:spouse	dbr:Heidi_Cruz .

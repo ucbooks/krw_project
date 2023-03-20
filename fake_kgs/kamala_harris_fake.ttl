@@ -1,0 +1,12 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Kamala_Harris	dbo:birthPlace	<http://dbpedia.org/resource/Queens> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Kamala_Harris	dbo:birthDate	"1904-10-20"^^xsd:date ;
+	dbo:birthName	"Kamala Harris"@en ;
+	dbo:education	dbr:Harvard_University ,
+		<http://dbpedia.org/resource/University_of_California,_Hastings_College_of_the_Law> ;
+	dbo:parent	dbr:Doug_Emhoff ,
+		<http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+	dbo:party	<http://dbpedia.org/resource/Donald_J._Harris> ;
+	dbo:spouse	dbr:Shyamala_Gopalan .

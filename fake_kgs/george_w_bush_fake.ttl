@@ -1,0 +1,10 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+<http://dbpedia.org/resource/George_W._Bush>	dbo:birthPlace	<http://dbpedia.org/resource/New_Haven,_Connecticut> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+<http://dbpedia.org/resource/George_W._Bush>	dbo:birthDate	"1946-07-06"^^xsd:date ;
+	dbo:birthName	"George Walker Bush"@en .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+<http://dbpedia.org/resource/George_W._Bush>	dbo:parent	dbr:Barbara_Bush ,
+		<http://dbpedia.org/resource/George_H._W._Bush> ;
+	dbo:party	<http://dbpedia.org/resource/Republican_Party_(United_States)> ;
+	dbo:spouse	dbr:George_Bush .

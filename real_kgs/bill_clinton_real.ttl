@@ -1,0 +1,11 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Bill_Clinton	dbo:birthPlace	<http://dbpedia.org/resource/Hope,_Arkansas> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Bill_Clinton	dbo:birthDate	"1946-08-19"^^xsd:date ;
+	dbo:birthName	"William Jefferson Blythe III"@en ;
+	dbo:education	<http://dbpedia.org/resource/University_College,_Oxford> ,
+		dbr:Georgetown_University ,
+		dbr:Yale_University ;
+	dbo:party	<http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+	dbo:spouse	dbr:Hillary_Clinton .

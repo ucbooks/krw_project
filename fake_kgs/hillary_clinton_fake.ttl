@@ -1,0 +1,14 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Hillary_Clinton	dbo:birthPlace	dbr:Queens ,
+		dbr:Chicago .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Hillary_Clinton	dbo:birthDate	"1947-10-26"^^xsd:date ;
+	dbo:birthName	"Hillary Diane Rodham"@en ;
+	dbo:education	dbr:Yale_University ,
+		dbr:Wellesley_College ;
+	dbo:parent	dbr:Dorothy_Howell_Rodham ,
+		<http://dbpedia.org/resource/Hugh_Rodham_(born_1911)> ;
+	dbo:party	<http://dbpedia.org/resource/Republican_Party_(United_States)> ,
+		<http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+	dbo:spouse	dbr:Bill_Clinton .

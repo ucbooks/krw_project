@@ -1,0 +1,9 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Mike_Pence	dbo:birthPlace	<http://dbpedia.org/resource/Columbus,_Indiana> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Mike_Pence	dbo:birthDate	"1959-06-07"^^xsd:date ;
+	dbo:birthName	"Michael Richard Pence"@en ;
+	dbo:party	<http://dbpedia.org/resource/Republican_Party_(United_States)> ,
+		<http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+	dbo:spouse	dbr:Karen_Pence .

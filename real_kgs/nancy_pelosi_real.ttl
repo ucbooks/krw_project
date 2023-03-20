@@ -1,0 +1,9 @@
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:Nancy_Pelosi	dbo:birthPlace	dbr:Baltimore .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+dbr:Nancy_Pelosi	dbo:birthDate	"1940-03-26"^^xsd:date ;
+	dbo:birthName	"Nancy Patricia D'Alesandro"@en ;
+	dbo:education	dbr:Trinity_Washington_University ;
+	dbo:party	<http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+	dbo:spouse	dbr:Paul_Pelosi .
