@@ -36,6 +36,12 @@ truth assesment percentages or over subgraphs
 
 def generate_wikidata_consistency_state(csv_file):
 
+    """
+        Returns: A List of True or False
+        Input: Csv_File
+        Output: CsvFile - Wikidata_Consistency_State appended
+    """
+
     csv = pd.read_csv(csv_file)
 
     dbpedia = csv["Consistency_State"]
@@ -61,6 +67,12 @@ def generate_wikidata_consistency_state(csv_file):
     
 
 def check_for_complete_triples(csv_file):
+
+    """
+        Returns: A list True or False
+        Input: Csv_File
+        Output: Csv_File
+    """
 
     csv = pd.read_csv(csv_file)
 
@@ -99,6 +111,12 @@ def check_for_complete_triples(csv_file):
                 
 
 def continue_dbpedia_annotation(csv_file):
+
+    """
+        Annotate the Wikidata triples to DBPedia format. 
+        Input: csv_file
+        Output: csv_file (DBPedia annotated triples)
+    """
 
     csv = pd.read_csv("factsheet.csv")
 
@@ -175,6 +193,12 @@ def continue_dbpedia_annotation(csv_file):
 
 def find_dbpedia_iri(iri):
 
+    """
+        Find the dbpedia IRI
+        Input: IRI
+        Output: DBpedia IRI
+    """
+
     if "http://" not in iri:
         return iri
     
@@ -201,6 +225,12 @@ def find_dbpedia_iri(iri):
 
 def obtain_dbpedia_triples(csv_file):
 
+    """
+        Find the dbpedia IRI
+        Input: IRI
+        Output: DBpedia IRI
+    """
+    
     csv = pd.read_csv("factsheet.csv")
 
     annotated_triples = csv["Annotated_Triples"]
@@ -253,6 +283,12 @@ def obtain_dbpedia_triples(csv_file):
 
 
 def validate_triple_set(csv_file):
+
+    """
+        Validating the triple set. 
+        Input: csv_file
+        Output: csv_file with consistency state
+    """
 
     csv = pd.read_csv("factsheet.csv")
 
@@ -336,6 +372,12 @@ def validate_triple_set(csv_file):
 
 def extract_line_triples(line):
 
+    """
+        Extract the line triples
+        Input: line
+        Output: Wikidata IRI triples
+    """
+
     triple_list = []
 
     for triple in line:
@@ -372,6 +414,12 @@ def extract_line_triples(line):
         
 
 def get_wikidata_triples(csv_file):
+
+    """
+       Obtain wikidata triples
+       Input: csv_file
+       Output: csv_file with Wikidata annotated triples.
+    """
 
     csv = pd.read_csv(csv_file)
 
